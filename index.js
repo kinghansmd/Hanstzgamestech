@@ -102,9 +102,9 @@ console.log("Session downloaded ✅")
   } else if (connection === 'open') {
   console.log('🧬 Installing vortex xmd Plugins')
   const path = require('path');
-  fs.readdirSync("./plugins/").forEach((plugin) => {
+  fs.readdirSync("https://github.com/kinghansmd/Vortex-xmd-data-base/tree/main/plugins/").forEach((plugin) => {
   if (path.extname(plugin).toLowerCase() == ".js") {
-  require("./plugins/" + plugin);
+  require("https://github.com/kinghansmd/Vortex-xmd-data-base/tree/main/plugins/" + plugin);
   }
   });
   console.log('Plugins installed successful ✅')
