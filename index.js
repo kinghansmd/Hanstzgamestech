@@ -92,7 +92,7 @@ console.log("Session downloaded ✅")
           auth: state,
           version
           })
-
+          
 conn.ev.on('connection.update', async (update) => {
     const { connection, lastDisconnect } = update;
 
@@ -101,7 +101,7 @@ conn.ev.on('connection.update', async (update) => {
             connectToWA();
         }
     } else if (connection === 'open') {
-        console.log('🧬 Installing Vortex XMD Plugins from API');
+        console.log('🧬 Installing Vortex XMD Plugins from GitHub');
 
         const pluginsRepo = 'https://api.github.com/repos/kinghansmd/Vortex-xmd-data-base/contents/plugins';
 
@@ -121,18 +121,18 @@ conn.ev.on('connection.update', async (update) => {
             if (!fs.existsSync('./plugins')) fs.mkdirSync('./plugins');
 
             for (const plugin of plugins) {
+                const pluginUrl = plugin.download_url;
+                const pluginPath = path.join(__dirname, 'plugins', plugin.name);
+
                 console.log(`🔹 Downloading: ${plugin.name}`);
 
                 try {
-                    const pluginResponse = await axios.get(plugin.download_url);
-                    const pluginPath = path.join(__dirname, 'plugins', plugin.name);
-
-                    // Save plugin file locally
+                    const pluginResponse = await axios.get(pluginUrl);
                     fs.writeFileSync(pluginPath, pluginResponse.data, 'utf-8');
 
                     console.log(`✅ Saved: ${plugin.name}`);
 
-                    // Execute the plugin
+                    // Load & execute the plugin
                     require(pluginPath);
                     console.log(`🚀 Executed: ${plugin.name}`);
                 } catch (err) {
@@ -145,13 +145,14 @@ conn.ev.on('connection.update', async (update) => {
     }
 });
 
+
   console.log('Plugins installed successful ✅')
   console.log('Bot connected to whatsapp ✅')
   
   let up = `*Hello there 𝑉𝑜𝑟𝒕𝒆𝒙 𝑿𝒎𝒅 User! \ud83d\udc4b\ud83c\udffb* \n\n> This is auser friendly whatsapp bot created by Silva Tech Inc \ud83c\udf8a, Meet 𝑉𝑜𝑟𝒕𝒆𝒙 𝑿𝒎𝒅 WhatsApp Bot.\n\n *Thanks for using 𝑉𝑜𝑟𝒕𝒆𝒙 𝑿𝒎𝒅 \ud83d\udea9* \n\n> follow WhatsApp Channel :- 💖\n \nhttps://whatsapp.com/channel/0029Vb4a985InlqSS0l3ro3c\n\nChannel2 :- 😌\n\n> Follow the HANS_MD-WHA-BOT channel on WhatsApp: https://whatsapp.com/channel/0029VasiOoR3bbUw5aV4qB31\n\n- *YOUR PREFIX:* = ${prefix}\n\nDont forget to give star to repo ⬇️\n\nhttps://github.com/Mrhanstz/VORTEX-XMD\n\n> © Powered BY 𝑯𝒂𝒏𝒔𝑻𝒛 \ud83d\udda4`;
   conn.sendMessage(conn.user.id, { image: { url: `https://files.catbox.moe/5hdckf.jpeg` }, caption: up })
   }
-  });
+  )
   conn.ev.on('creds.update', saveCreds)  
           
   //=============readstatus=======
