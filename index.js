@@ -32,7 +32,6 @@ const {
   const util = require('util')
   const { sms,downloadMediaMessage } = require('./lib/msg')
   const FileType = require('file-type');
-  const vm = require('vm');
   const axios = require('axios')
   const { File } = require('megajs')
   const { fromBuffer } = require('file-type')
@@ -93,44 +92,65 @@ console.log("Session downloaded ✅")
           auth: state,
           version
           })
-      
-  conn.ev.on('connection.update', (update) => {
-  const { connection, lastDisconnect } = update
-  if (connection === 'close') {
-  if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
-  connectToWA()
-  }
-  } else if (connection === 'open') {
-    console.log('🧬 Installing Vortex XMD Plugins from GitHub');
 
-    const pluginsRepo = 'https://api.github.com/repos/kinghansmd/Vortex-xmd-data-base/contents/plugins';
+conn.ev.on('connection.update', async (update) => {
+    const { connection, lastDisconnect } = update;
 
-    axios.get(pluginsRepo)
-        .then(async (response) => {
+    if (connection === 'close') {
+        if (lastDisconnect.error?.output?.statusCode !== DisconnectReason.loggedOut) {
+            connectToWA();
+        }
+    } else if (connection === 'open') {
+        console.log('🧬 Installing Vortex XMD Plugins from API');
+
+        const pluginsRepo = 'https://api.github.com/repos/kinghansmd/Vortex-xmd-data-base/contents/plugins';
+
+        try {
+            const response = await axios.get(pluginsRepo, {
+                headers: { 'User-Agent': 'Mozilla/5.0' } // Required by GitHub API
+            });
+
             const plugins = response.data.filter(file => file.name.endsWith('.js'));
 
+            if (plugins.length === 0) {
+                console.log('⚠️ No plugins found.');
+                return;
+            }
+
+            // Ensure plugins directory exists
+            if (!fs.existsSync('./plugins')) fs.mkdirSync('./plugins');
+
             for (const plugin of plugins) {
-                console.log(`🔹 Loading: ${plugin.name}`);
+                console.log(`🔹 Downloading: ${plugin.name}`);
+
                 try {
-                    const pluginCode = await axios.get(plugin.download_url);
-                    vm.runInThisContext(pluginCode.data);
-                    console.log(`✅ Loaded: ${plugin.name}`);
+                    const pluginResponse = await axios.get(plugin.download_url);
+                    const pluginPath = path.join(__dirname, 'plugins', plugin.name);
+
+                    // Save plugin file locally
+                    fs.writeFileSync(pluginPath, pluginResponse.data, 'utf-8');
+
+                    console.log(`✅ Saved: ${plugin.name}`);
+
+                    // Execute the plugin
+                    require(pluginPath);
+                    console.log(`🚀 Executed: ${plugin.name}`);
                 } catch (err) {
                     console.error(`❌ Error loading ${plugin.name}:`, err.message);
                 }
             }
-        })
-        .catch(err => {
+        } catch (err) {
             console.error('❌ Failed to fetch plugins:', err.message);
-        });
-}
+        }
+    }
+});
 
   console.log('Plugins installed successful ✅')
   console.log('Bot connected to whatsapp ✅')
   
-  let up = `*Hello there 𝑉𝑜𝑟𝒕𝒆𝒙 𝑿𝒎𝒅 User! \ud83d\udc4b\ud83c\udffb* \n\n> This is auser friendly whatsapp bot created by HansTz Tech Inc \ud83c\udf8a, Meet 𝐕𝐎𝐑𝐓𝐄𝐗-𝐗𝐌𝐃 WhatsApp Bot.\n\n *Thanks for using 𝑉𝑜𝑟𝒕𝒆𝒙 𝑿𝒎𝒅 \ud83d\udea9* \n\n> follow WhatsApp Channel :- 💖\n \nhttps://whatsapp.com/channel/0029Vb4a985InlqSS0l3ro3c\n\nChannel2 :- 😌\n\n> Follow the HANS_MD-WHA-BOT channel on WhatsApp: https://whatsapp.com/channel/0029VasiOoR3bbUw5aV4qB31\n\n- *YOUR PREFIX:* = ${prefix}\n\nDont forget to give star to repo ⬇️\n\nhttps://github.com/Mrhanstz/VORTEX-XMD\n\n> © Powered BY 𝑯𝒂𝒏𝒔𝑻𝒛 \ud83d\udda4`;
-  conn.sendMessage(conn.user.id, { image: { url: `https://files.catbox.moe/6wodw5.jpeg` }, caption: up })
-  
+  let up = `*Hello there 𝑉𝑜𝑟𝒕𝒆𝒙 𝑿𝒎𝒅 User! \ud83d\udc4b\ud83c\udffb* \n\n> This is auser friendly whatsapp bot created by Silva Tech Inc \ud83c\udf8a, Meet 𝑉𝑜𝑟𝒕𝒆𝒙 𝑿𝒎𝒅 WhatsApp Bot.\n\n *Thanks for using 𝑉𝑜𝑟𝒕𝒆𝒙 𝑿𝒎𝒅 \ud83d\udea9* \n\n> follow WhatsApp Channel :- 💖\n \nhttps://whatsapp.com/channel/0029Vb4a985InlqSS0l3ro3c\n\nChannel2 :- 😌\n\n> Follow the HANS_MD-WHA-BOT channel on WhatsApp: https://whatsapp.com/channel/0029VasiOoR3bbUw5aV4qB31\n\n- *YOUR PREFIX:* = ${prefix}\n\nDont forget to give star to repo ⬇️\n\nhttps://github.com/Mrhanstz/VORTEX-XMD\n\n> © Powered BY 𝑯𝒂𝒏𝒔𝑻𝒛 \ud83d\udda4`;
+  conn.sendMessage(conn.user.id, { image: { url: `https://files.catbox.moe/5hdckf.jpeg` }, caption: up })
+  }
   })
   conn.ev.on('creds.update', saveCreds)  
           
