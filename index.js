@@ -93,20 +93,41 @@ console.log("Session downloaded ✅")
           version
           })
       
-  conn.ev.on('connection.update', (update) => {
-  const { connection, lastDisconnect } = update
-  if (connection === 'close') {
-  if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
-  connectToWA()
-  }
-  } else if (connection === 'open') {
-  console.log('🧬 Installing vortex xmd Plugins')
-  const path = require('path');
-  fs.readdirSync("./plugins/HansTz").forEach((plugin) => {
-  if (path.extname(plugin).toLowerCase() == ".js") {
-  require("./plugins/HansTz" + plugin);
-  }
+  const https = require("https");
+
+const GITHUB_API_URL = "https://api.github.com/repos/kinghansmd/Vortex-xmd-data-base/contents/plugins";
+
+const headers = {
+  "User-Agent": "Node.js",
+  "Accept": "application/vnd.github.v3+json",
+};
+
+async function fetchPlugins() {
+  console.log('🧬 Fetching Vortex XMD Plugins');
+
+  https.get(GITHUB_API_URL, { headers }, (res) => {
+    let data = "";
+
+    res.on("data", (chunk) => {
+      data += chunk;
+    });
+
+    res.on("end", () => {
+      try {
+        const files = JSON.parse(data);
+        const pluginNames = files.filter(file => file.name.endsWith(".js")).map(file => file.name);
+        console.log("📂 Plugins found:", pluginNames);
+      } catch (err) {
+        console.error("Error parsing plugin list:", err);
+      }
+    });
+  }).on("error", (err) => {
+    console.error("Error fetching plugin list:", err);
   });
+}
+
+fetchPlugins();
+
   console.log('Plugins installed successful ✅')
   console.log('Bot connected to whatsapp ✅')
   
