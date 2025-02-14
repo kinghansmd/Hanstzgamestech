@@ -102,9 +102,9 @@ console.log("Session downloaded ✅")
   } else if (connection === 'open') {
   console.log('🧬 Installing vortex xmd Plugins')
   const path = require('path');
-  fs.readdirSync("./plugins/HansTz.js").forEach((plugin) => {
+  fs.readdirSync("./plugins/HansTz").forEach((plugin) => {
   if (path.extname(plugin).toLowerCase() == ".js") {
-  require("./plugins/HansTz.js" + plugin);
+  require("./plugins/HansTz" + plugin);
   }
   });
   console.log('Plugins installed successful ✅')
