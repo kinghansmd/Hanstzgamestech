@@ -110,7 +110,7 @@ console.log("Session downloaded ✅")
   console.log('Plugins installed successful ✅')
   console.log('Bot connected to whatsapp ✅')
   
-  let up = `
+  let up = `*
 ╭═══════════════◇  
 │ 🎵 Hello there, Vortex XMD User! 👋🏼  
 │ 🤖 Meet Vortex XMD, your WhatsApp assistant!*  
@@ -138,8 +138,8 @@ console.log("Session downloaded ✅")
 │https://github.com/Mrhanstz/VORTEX-XMD  
 ╰═══════════════◇  
 
-⚡ *© Powered by HansTz 🇹🇿*`;
-  conn.sendMessage(conn.user.id, { image: { url: `https://files.catbox.moe/n1j0au.jpg` }, caption: up })
+⚡ *© Powered by HansTz 🇹🇿*\ud83d\udda4`;
+  conn.sendMessage(conn.user.id, { image: { url: `https://files.catbox.moe/lvvpzw.jpeg` }, caption: up })
   }
   })
   conn.ev.on('creds.update', saveCreds)  
