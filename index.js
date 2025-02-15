@@ -110,8 +110,36 @@ console.log("Session downloaded ✅")
   console.log('Plugins installed successful ✅')
   console.log('Bot connected to whatsapp ✅')
   
-  let up = `*Hello there 𝑉𝑜𝑟𝒕𝒆𝒙 𝑿𝒎𝒅 User! \ud83d\udc4b\ud83c\udffb* \n\n> This is auser friendly whatsapp bot created by Silva Tech Inc \ud83c\udf8a, Meet 𝑉𝑜𝑟𝒕𝒆𝒙 𝑿𝒎𝒅 WhatsApp Bot.\n\n *Thanks for using 𝑉𝑜𝑟𝒕𝒆𝒙 𝑿𝒎𝒅 \ud83d\udea9* \n\n> follow WhatsApp Channel :- 💖\n \nhttps://whatsapp.com/channel/0029Vb4a985InlqSS0l3ro3c\n\nChannel2 :- 😌\n\n> Follow the HANS_MD-WHA-BOT channel on WhatsApp: https://whatsapp.com/channel/0029VasiOoR3bbUw5aV4qB31\n\n- *YOUR PREFIX:* = ${prefix}\n\nDont forget to give star to repo ⬇️\n\nhttps://github.com/Mrhanstz/VORTEX-XMD\n\n> © Powered BY 𝑯𝒂𝒏𝒔𝑻𝒛 \ud83d\udda4`;
-  conn.sendMessage(conn.user.id, { image: { url: `https://files.catbox.moe/lvvpzw.jpeg` }, caption: up })
+  let up = `
+╭═══════════════◇  
+│ 🎵 Hello there, Vortex XMD User! 👋🏼  
+│ 🤖 Meet Vortex XMD, your WhatsApp assistant!*  
+│ 🚀 Developed by HansTz Tech Inc  
+╰═══════════════◇  
+
+📌 *Thank you for using Vortex XMD!* 🚩  
+
+╭═══❖•🔹Stay Connected:*  
+│📌Join our WhatsApp Channel
+│═══════════════◇  
+ https://whatsapp.com/channel/0029Vb4a985InlqSS0l3ro3c  
+│═══════════════◇   
+│         📌Channel 2
+│═══════════════◇  
+ https://whatsapp.com/channel/0029VasiOoR3bbUw5aV4qB31  
+╰═══════════════◇  
+
+╭═══❖•🔹Bot Control
+│🔹YOUR PREFIX:* [ ${prefix} ]
+╰═══════════════◇  
+
+╭═══❖• 🔹 *Support & Repo:*  
+│⭐Give a star to our GitHub repo
+│https://github.com/Mrhanstz/VORTEX-XMD  
+╰═══════════════◇  
+
+⚡ *© Powered by HansTz 🇹🇿*`;
+  conn.sendMessage(conn.user.id, { image: { url: `https://files.catbox.moe/n1j0au.jpg` }, caption: up })
   }
   })
   conn.ev.on('creds.update', saveCreds)  
